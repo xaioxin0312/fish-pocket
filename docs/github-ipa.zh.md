@@ -2,7 +2,7 @@
 
 ## 当前状态
 
-新增的 `Device IPA (unsigned)` 工作流用于先验证上游源码能否生成真机包。它保留原工程的 App、插件运行时、分享扩展、小组件和 Watch target，不改变最低系统版本，也没有完成 iOS 16 移植。
+新增的 `Device IPA (unsigned)` 工作流用于先验证上游源码能否生成真机包。此 fork 保留 App、插件运行时、分享扩展、Mini Apps 和快捷指令，移除小组件、灵动岛／锁屏实时活动、控制中心按钮和 Apple Watch target。未改变最低系统版本，也尚未完成 iOS 16 移植。
 
 产物是**未签名 IPA**，不是已安装验证的版本。首次运行前无需上传 Apple 证书；安装前仍需用适合设备、App ID 和所需能力的方式签名。普通签名安装时 App Group、HealthKit、HomeKit 等 entitlement 与 profile 必须匹配。不要在 Issue、聊天、工作流文件中粘贴 Token、私钥或证书密码。
 
@@ -21,8 +21,7 @@
 - 将 Observation 状态模型和 iOS 17 SwiftUI API 迁移到可在 iOS 16 运行的实现，包含插件管理和分享 UI。
 - 补上旧版 EventKit 授权分支及旧版隐私声明。
 - 为 FFmpeg、libgit2，以及检查后的 Node/Python 等依赖提供兼容 iOS 16 的构建；同时检查 Mach-O 最低系统版本和所用符号，而不仅是 Info.plist。
-- 分别适配小组件和 Live Activity 的显示、跳转和交互。新系统独有的能力要逐项设计旧系统行为。
-- 确认 Watch companion 与 iOS 16 配对环境的兼容策略。
-- 在云端编译和链接通过后，再签名并在 iOS 16.6.1 设备检查启动、引擎、插件安装/启停、分享、小组件和必要的本机能力。
+- 小组件、Live Activity 和 Apple Watch 按用户要求不再包含在此 fork 的构建中。
+- 在云端编译和链接通过后，再签名并在 iOS 16.6.1 设备检查启动、引擎、插件安装/启停、分享和必要的本机能力。
 
 在以上验证完成前，本流程的产物不应称为“功能完整的 iOS 16.6.1 版”。

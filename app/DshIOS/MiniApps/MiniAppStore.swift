@@ -1,7 +1,6 @@
 import CryptoKit
 import Foundation
 import Observation
-import WidgetKit
 import WebKit
 
 /// One app of 我的应用: a folder the agent wrote under `~/apps` (the engine's path), run full
@@ -20,10 +19,7 @@ struct MiniApp: Identifiable, Hashable {
     let modified: Date
 
     var catalogEntry: MiniAppSummary {
-        // Named by what the file is now, so a redrawn icon reaches the widget.
-        let stamp = iconImage.flatMap { try? FileManager.default.attributesOfItem(atPath: $0.path) }
-            .map { "\(id)-\($0[.size] as? Int ?? 0)-\(Int(($0[.modificationDate] as? Date)?.timeIntervalSince1970 ?? 0)).png" }
-        return MiniAppSummary(id: id, name: name, icon: icon, color: color, image: stamp)
+        MiniAppSummary(id: id, name: name, icon: icon, color: color)
     }
     static let iconFile = "icon.png"
     /// Where the agent finds it.
@@ -122,10 +118,7 @@ final class MiniAppStore {
                 for app in apps { await MiniAppPublisher.shared.publish(app) }
             }
         }
-        let images = Dictionary(uniqueKeysWithValues: apps.compactMap { app in app.iconImage.map { (app.id, $0) } })
-        if MiniAppCatalog.write(apps.map(\.catalogEntry), images: images) {
-            WidgetCenter.shared.reloadTimelines(ofKind: MiniAppCatalog.widgetKind)
-        }
+        _ = MiniAppCatalog.write(apps.map(\.catalogEntry))
     }
 
     func app(_ id: String) -> MiniApp? {

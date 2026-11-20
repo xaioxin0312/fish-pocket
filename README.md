@@ -2,7 +2,8 @@
   <img src="docs/assets/mascot.png" width="220" alt="Fish Pocket 吉祥物：眨眼笑的鲸鱼娘大肥鱼">
 </p>
 
-<h3 align="center">Fish Pocket</h3>
+<p align="center"><b>xaioxin0312/fish-pocket 兼容性 fork</b>：此分支构建会移除小组件、锁屏／灵动岛实时活动、控制中心入口和 Apple Watch App；保留 DSH 插件管理、Mini Apps 与分享扩展。当前工程仍以 iOS 17.0 为最低目标，iOS 16 适配尚在进行。</p>
+
 
 <h1 align="center">在 iPhone 和 iPad 上本机运行 DSH（DeepSeek Harness），界面完全原生</h1>
 
@@ -11,7 +12,7 @@
 </p>
 
 <p align="center">
-  <b>功能对齐 DSH 官方 Web UI，官方有的这里都有。智能体还能直接用 iPhone 自带的日历、提醒事项、健康、照片和地图。</b>
+  <b>主要对齐 DSH 官方 Web UI 的会话与插件能力。智能体还能直接用 iPhone 自带的日历、提醒事项、健康、照片和地图。</b>
 </p>
 
 <p align="center">
@@ -26,9 +27,8 @@
 
 <table>
 <tr>
-<td align="center" width="33%"><img src="docs/assets/demo-market.gif" width="250" alt="在插件市场里找到 cc-safety-net，安装并启用；回到对话后，智能体要执行 git reset --hard，被这个插件拦下"><br/><b>插件市场</b><br/><sub>在手机上装一个安全网插件，危险命令当场被拦下</sub></td>
-<td align="center" width="33%"><img src="docs/assets/demo-native.gif" width="250" alt="一句话让智能体把评审会加进系统日历，再建一条提醒，随后在日历 App 里看到这条日程"><br/><b>本机能力</b><br/><sub>说一句话，日程就进了系统日历，提醒也建好了</sub></td>
-<td align="center" width="33%"><img src="docs/assets/demo-widget.gif" width="250" alt="任务运行时回到主屏幕，小组件和灵动岛显示这个会话正在进行，点小组件回到会话"><br/><b>小组件和灵动岛</b><br/><sub>切到后台任务照样跑，进度在主屏幕上看</sub></td>
+<td align="center" width="50%"><img src="docs/assets/demo-market.gif" width="250" alt="在插件市场里找到 cc-safety-net，安装并启用；回到对话后，智能体要执行 git reset --hard，被这个插件拦下"><br/><b>插件市场</b><br/><sub>在手机上装一个安全网插件，危险命令当场被拦下</sub></td>
+<td align="center" width="50%"><img src="docs/assets/demo-native.gif" width="250" alt="一句话让智能体把评审会加进系统日历，再建一条提醒，随后在日历 App 里看到这条日程"><br/><b>本机能力</b><br/><sub>说一句话，日程就进了系统日历，提醒也建好了</sub></td>
 </tr>
 </table>
 
@@ -63,14 +63,6 @@
   <sub>合上时在外屏发起任务，展开后同一个会话接着跑，侧栏和对话并排</sub>
 </p>
 
-<p align="center">
-  <img src="docs/assets/demo-watch.gif" width="840" alt="在 iPhone 上发出任务后回到主屏幕；旁边 Apple Watch 上的大肥鱼先显示正在干活，再提示等你答复，在手表上点开审批并允许后任务继续，跑完时手表弹出完成卡">
-  <br/>
-  <b>Apple Watch</b>
-  <br/>
-  <sub>放下手机，抬腕就知道它干到哪了：审批在手表上点，跑完大肥鱼叫你一声</sub>
-</p>
-
 <p align="center"><sub>以上都是实际运行的录屏，等待的部分剪掉或加了速。</sub></p>
 
 ## 能做什么
@@ -90,7 +82,7 @@
 - **DSH 插件：** 在手机上安装和管理 DSH 插件，装完就能用，不用回到电脑前。App 不提供插件市场；「索引源」里列了两个第三方示例索引源，可以自行甄别后启用，也可以添加自己信任的索引源，或者直接从 npm 安装纯 JavaScript 插件。
 - **工作台：** 终端、文件预览、内置浏览器和改动查看都放在一个面板里。内置浏览器支持多标签页，智能体也能直接操作网页：点按、输入、截图、带登录态请求、上传下载文件。
 - **语音输入和朗读：** 按住输入栏说话，松手转成文字发出去，识别可以用 DeepSeek 或火山引擎；回复可以用 DeepSeek 语音朗读，女声男声可选。都用你自己的 API Key。
-- **iOS 专属体验：** 灵动岛和锁屏 Live Activity，主屏幕和锁屏小组件，控制中心按钮，Siri 和快捷指令，从微信等 App 分享进新对话、Bot 或群聊，把几轮对话分享成一张长图（密钥自动打码），切到后台任务也能继续。
+- **iOS 专属体验：** Siri 和快捷指令，从微信等 App 分享进新对话、Bot 或群聊，把几轮对话分享成一张长图（密钥自动打码），切到后台任务也能继续。本 fork 不打包小组件、锁屏／灵动岛实时活动、控制中心入口或 Apple Watch App。
 - **iPad 和 iPhone Duo 适配：** 系统的自适应 Tab（顶部 Tab 栏或侧边栏）、会话列表和对话并排、右侧工作台、多窗口、拖放文件，外接键盘支持常用快捷键。iPhone Duo 合上用外屏、展开铺满内屏，会话不中断。
 - **更私密：** 会话和工作区留在设备上。
 
@@ -121,7 +113,7 @@
 
 - **点开就用：** 打开的是做好的版本，不用等编译，也不用启动引擎；智能体改到一半时，你打开的还是上一次做好的那版。
 - **各自隔离：** 每个 Mini App 有自己的存储，删掉时一起删；能联网，但碰不到手机上的其他数据和本机能力。
-- **入口多：** 「Mini Apps」标签页、聊天里的卡片、「Mini Apps」小组件和快捷指令都能打开。
+- **入口多：** 「Mini Apps」标签页、聊天里的卡片和快捷指令都能打开。
 
 先试试自带的倒数日、番茄钟和水果翻翻。
 
@@ -137,17 +129,17 @@ GitHub、Notion 这些服务在连接器里连一次，普通会话和 Bot 都�
 
 ## 远程控制
 
-电脑和服务器上的智能体也能在手机上管。登录 [Agents Anywhere](https://github.com/anywhere-labs/Agents-Anywhere) 后，那台机器上的 Codex、Claude Code 和 DeepSeek Harness 会话和本机会话出现在同一个会话列表里：跟进进度、接着聊、回应审批、随时打断，也能直接在那台机器上开新会话。锁屏、灵动岛和小组件对远程会话一视同仁。
+电脑和服务器上的智能体也能在手机上管。登录 [Agents Anywhere](https://github.com/anywhere-labs/Agents-Anywhere) 后，那台机器上的 Codex、Claude Code 和 DeepSeek Harness 会话和本机会话出现在同一个会话列表里：跟进进度、接着聊、回应审批、随时打断，也能直接在那台机器上开新会话。你可以在 App 中查看状态并接收提示；此 fork 不含小组件、锁屏实时活动或 Watch 提醒。
 
 个人电脑装上 Agents Anywhere 桌面应用，在 App 里扫码登录就行，不需要公网 IP；没有图形界面的云服务器跑它的 Connector。手机和那台机器之间经 Agents Anywhere 的服务器转发，可以用官方云服务，也可以自己部署。这是可选功能，不登录什么都不会发生，本机会话始终留在手机上。详细步骤见[远程控制说明](docs/remote-control.md)。
 
 ## 和 DSH 官方 Web UI 的对比
 
-功能和 DSH 官方 Web UI 对齐，官方能做的这里都能做，界面则用 SwiftUI 完全重写，iPhone 和 iPad 各按自己的习惯适配。在这之上还有官方没有的：本机能力、操控手机、做自己的小工具、灵动岛和锁屏 Live Activity、小组件、Siri 和快捷指令、切到后台继续跑、iPad 多窗口、原生界面的 Bot 模式，以及远程控制。
+功能与 DSH 官方 Web UI 的主要会话和插件能力对齐；此外还有本机能力、操控手机、Mini Apps、Siri 和快捷指令、分享扩展、后台任务、iPad 多窗口、原生界面的 Bot 模式，以及远程控制。本 fork 不含小组件、Live Activity、控制中心按钮和 Apple Watch App。
 
 ## 快速开始
 
-直接安装，需要 iOS 17 或更高版本：
+直接安装，当前构建最低支持 iOS 17.0；iOS 16.6.1 兼容移植仍在进行。以下 App Store 和 TestFlight 是原版上游应用，不是本 fork 的构建产物：
 
 - **App Store（推荐）**：[在 App Store 下载](https://apps.apple.com/app/id6830703602)。每个版本都要等苹果审核，所以会比 TestFlight 和开源仓库晚一些。
 - **TestFlight（想先试新版本）**：在 iPhone 或 iPad 上打开 [TestFlight 公测链接](https://testflight.apple.com/join/2SCftb2M)。新版本最先发到这里，和开源仓库保持同步。
@@ -155,7 +147,7 @@ GitHub、Notion 这些服务在连接器里连一次，普通会话和 Bot 都�
 自己编译：你需要 macOS、Xcode 27 或更高版本、Node 24 和 `xcodegen`，构建 libgit2 还需要 `cmake` 或 `uv`。要在 iPhone Duo 上铺满屏幕，需要用 Xcode 27.1 或更高版本编译，更早的版本编出来的包在 Duo 上只按普通 iPhone 的大小显示。
 
 ```bash
-git clone https://github.com/imsai-sh/fish-pocket.git
+git clone https://github.com/xaioxin0312/fish-pocket.git
 ```
 
 ```bash
@@ -213,7 +205,7 @@ Fish Pocket 是一款开源的 iOS App，把 DeepSeek Harness（简称 DSH）的
 
 ### Fish Pocket 和 DSH 官方 Web UI 有什么区别？
 
-功能对齐，官方 Web UI 能做的 Fish Pocket 都能做。区别是引擎跑在手机和平板本机，不用开电脑；界面用 SwiftUI 重写，是 iPhone 和 iPad 的原生体验；还多了本机能力、灵动岛、小组件、Siri 和 iPad 多窗口这些官方没有的功能。
+主要会话与插件能力对齐。引擎跑在手机和平板本机，界面用 SwiftUI 重写，保留本机能力、Siri 和 iPad 多窗口；此 fork 不打包小组件、Live Activity、控制中心入口或 Apple Watch App。
 
 ### 用 Fish Pocket 要开着电脑吗？
 
@@ -261,7 +253,7 @@ App 免费，代码以 MIT 协议开源，商用需要先取得授权，见[许�
 - [x] 智能体可以使用 iPhone 的本机能力：日历、提醒事项、健康、照片、地图等
 - [x] 内置 Python 3.15，支持 pip 和 venv
 - [x] 内置 FFmpeg：`ffmpeg`、`ffprobe`
-- [x] 远程控制：在手机上管电脑和服务器里的 Codex、Claude Code 和 DSH 会话，锁屏、灵动岛和小组件与本机会话同等对待（对接 Agents Anywhere）
+- [x] 远程控制：在手机上管电脑和服务器里的 Codex、Claude Code 和 DSH 会话（对接 Agents Anywhere；此 fork 仅保留 App 内状态与提醒）
 - [ ] bash 解释器移出引擎线程
 - [x] Bot 模式：在聊天里给口袋里的 Agent 派任务
 - [x] 操控手机：对接 iCTRL，智能体替你点按其他 App

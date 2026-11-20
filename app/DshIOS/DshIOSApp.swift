@@ -10,9 +10,8 @@ struct DshIOSApp: App {
 
     init() {
         WhatsNew.noteLaunch()
-        // Siri, Shortcuts and the Control Center button: the window in front follows the link.
+        // Siri and Shortcuts: the window in front follows the link.
         DshIntentBridge.open = { LinkInbox.shared.request = LinkRequest(link: $0) }
-        WatchLink.shared.activate()
         // 我的应用: the compiler is ready before the first app opens.
         MiniAppCompiler.shared.warmUp()
     }
@@ -31,8 +30,6 @@ struct DshIOSApp: App {
                 LinkInbox.shared.request = LinkRequest(link: .share(id))
             }
             BackgroundKeeper.shared.scenePhaseChanged(to: phase)
-            LiveActivityController.shared.scenePhaseChanged(to: phase)
-            WatchLink.shared.scenePhaseChanged(to: phase)
             PhoneRecorder.shared.scenePhaseChanged(to: phase)
         }
     }
@@ -60,7 +57,7 @@ struct SessionWindow: Codable, Hashable {
 }
 
 /// The app's connection to the engine, one however many windows are open: they show
-/// the same sessions, and the Live Activity and background work follow one model.
+/// the same sessions, and background work follows one model.
 /// Each engine generation (a new listening URL after a restart) gets a fresh one.
 @MainActor
 @Observable
@@ -87,7 +84,7 @@ struct RootView: View {
     @EnvironmentObject private var engine: NodeEngine
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(ThemePreference.key) private var themePreference = ThemePreference.system
-    /// A `dsh://` link, held here because a widget can launch the app: the main view
+    /// A `dsh://` link, held here because Shortcuts can launch the app: the main view
     /// is not up until the engine is, and follows it then.
     @State private var link: LinkRequest?
     private let connection = EngineConnection.shared
@@ -104,7 +101,7 @@ struct RootView: View {
                 inbox.request = nil
                 follow(request)
             }
-            // A widget or Shortcuts may offer an app the agent made since the list was last written.
+            // Shortcuts may offer an app the agent made since the list was last written.
             .onChange(of: scenePhase) { _, phase in
                 if phase == .background { MiniAppStore.shared.refresh() }
             }

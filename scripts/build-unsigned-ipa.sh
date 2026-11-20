@@ -19,8 +19,7 @@ scripts/check-root-imports.sh
 scripts/build-engine.sh
 (cd app && xcodegen generate --quiet)
 mkdir -p build/ipa
-# A destination, rather than -sdk iphoneos, lets the embedded watch target
-# select its own SDK. Preserve the app, share and widget targets unchanged.
+# Build the app and share extension with their own SDK selection.
 xcodebuild -project app/DshIOS.xcodeproj -scheme DshIOS \
   -configuration Release -destination 'generic/platform=iOS' \
   -derivedDataPath "$root/build/DeviceDerivedData" \
@@ -56,6 +55,13 @@ manifest = {
     'main_app': info(app / 'Info.plist'),
     'embedded_bundles': [info(p) for p in sorted(app.rglob('Info.plist')) if p != app / 'Info.plist'],
 }
+bundles = [item['bundle'] for item in manifest['embedded_bundles']]
+for omitted in ('DshLiveActivity.appex', 'DshWatch.app'):
+    if any(path.endswith('/' + omitted) for path in bundles):
+        raise SystemExit('Unexpected removed component: ' + omitted)
+if not any(path.endswith('/DshShare.appex') for path in bundles):
+    raise SystemExit('Share extension missing from device package')
+manifest['omitted_features'] = ['widgets', 'live_activities', 'apple_watch']
 if 'iPhoneOS' not in manifest['main_app']['platforms']:
     raise SystemExit('Refusing to package a non-device app')
 pathlib.Path(os.environ['FISH_IPA_MANIFEST']).write_text(

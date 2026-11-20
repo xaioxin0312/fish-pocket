@@ -1,19 +1,17 @@
 import SwiftUI
-import WatchConnectivity
 
 /// The 探索 tab: what the agent can be given beyond a conversation of its own — plugins,
 /// connectors, this device's capabilities, phone control — then the other devices (the computers
-/// of remote control, Apple Watch), the web version and sharing the app, and 设置 behind the gear
-/// at its top. On an iPad before iOS 18 these are rows of the sidebar, Apple Watch and sharing
-/// stay in 设置, and 设置 is a sheet.
+/// of remote control), the web version and sharing the app, and 设置 behind the gear
+/// at its top. On an iPad before iOS 18 these are rows of the sidebar; sharing
+/// stays in 设置, and 设置 is a sheet.
 struct ExploreTabView: View {
-    enum Route: Hashable { case plugins, connectors, capabilities, phoneControl, remote, watch, share, settings }
+    enum Route: Hashable { case plugins, connectors, capabilities, phoneControl, remote, share, settings }
 
     @Environment(AppModel.self) private var app
     @Environment(\.scenePhase) private var scenePhase
     @Binding var path: [Route]
     @State private var phoneControl = PhoneControlService()
-    @State private var watch = WatchPairing.current
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -30,10 +28,6 @@ struct ExploreTabView: View {
                 Section {
                     row(.remote, "远程控制", .remote, "在手机上管电脑里的智能体", status: remoteStatus,
                         warns: app.remote.expired)
-                    if WCSession.isSupported() {
-                        row(.watch, "Apple Watch", .watch, "在手腕上看会话、做确认",
-                            status: watch == .installed ? String(localized: "已安装") : nil)
-                    }
                 } header: {
                     Text("更多设备")
                 }
@@ -65,18 +59,14 @@ struct ExploreTabView: View {
                 case .capabilities: NativeCapabilitiesView().environment(\.systemLists, true)
                 case .phoneControl: PhoneControlView().environment(\.systemLists, true)
                 case .remote: RemoteControlPage().environment(\.systemLists, true)
-                case .watch: WatchSetupPage()
                 case .share: ShareAppPage()
                 case .settings: SettingsView(pushed: true)
                 }
             }
-            // The rows say whether iCTRL runs and whether the watch has the app; both change while
-            // the user is in another app.
+            // iCTRL can start or stop while the user is in another app.
             .task { await phoneControl.refresh() }
-            .onAppear { watch = WatchPairing.current }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active else { return }
-                watch = WatchPairing.current
                 Task { await phoneControl.refresh() }
             }
         }

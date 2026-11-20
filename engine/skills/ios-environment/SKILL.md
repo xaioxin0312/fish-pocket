@@ -11,6 +11,10 @@ Longer topics live in files beside this one, under `references/`. Read one when 
 
 Check here before improvising, and do not retry a command this page says is missing. Installing it will not work either: there is no `apt`, `brew`, or `sudo`, and iOS refuses to run downloaded binaries.
 
+## This fork
+
+This build omits home/lock-screen widgets, Live Activities (including Dynamic Island presentation), Control Center controls and the Apple Watch companion. DSH plugin management, the share extension, Mini Apps and Shortcuts remain. Do not direct the user to a widget or Watch setup page in this build.
+
 ## Commands that exist
 
 Anything not listed here should be assumed missing.

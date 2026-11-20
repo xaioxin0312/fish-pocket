@@ -1,11 +1,9 @@
-import ActivityKit
 import Foundation
 import Observation
 import UIKit
 
 /// The sessions on a computer that the phone answers for, outside their conversations. The
-/// lock screen and the widgets read them straight from `RemoteStore`; this keeps the rest in
-/// step, as it is for the phone's own sessions: the app stays alive off screen while one of
+/// app stays in step with the phone's own sessions: it stays alive off screen while one of
 /// them works, and a request in a session the user is not looking at is said once.
 @MainActor
 final class RemotePresence {
@@ -32,8 +30,7 @@ final class RemotePresence {
     }
 
     /// A request waits where the user is not looking: in the app a toast with the way there;
-    /// away from it the Live Activity says so, or a notification where those are switched off
-    /// (only when notifications are already allowed: this never asks).
+    /// away from it, a notification (only when notifications are already allowed: this never asks).
     private func announce(_ attention: [RemoteSession], requests: [String: RemoteNotice], in app: AppModel) {
         announced.formIntersection(Set(requests.values.map(\.id)))
         for session in attention {
@@ -42,7 +39,6 @@ final class RemotePresence {
             let selection = RemoteStore.selection(session.id)
             let active = UIApplication.shared.applicationState == .active
             if active, app.currentSession == selection { continue }
-            if !active, ActivityAuthorizationInfo().areActivitiesEnabled { continue }
             let text = request.isApproval ? String(localized: "「\(session.displayTitle)」等你允许") : String(localized: "「\(session.displayTitle)」等你回答")
             BotNotifier.announce(text, detail: request.summary, app: app) { [weak app] in app?.open(session: selection) }
         }

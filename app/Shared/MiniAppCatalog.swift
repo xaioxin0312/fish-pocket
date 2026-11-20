@@ -1,9 +1,8 @@
 import AppIntents
+import Foundation
 import SwiftUI
 
-/// 我的应用 as the widgets and Shortcuts see them. The apps live in the engine's files, which the
-/// widget extension cannot reach, so the app writes this list into the App Group whenever it reads
-/// the apps, in the order its own page shows them.
+/// Mini Apps listed for the app and its Shortcuts actions.
 struct MiniAppSummary: Codable, Hashable, Identifiable {
     let id: String
     let name: String
@@ -11,15 +10,11 @@ struct MiniAppSummary: Codable, Hashable, Identifiable {
     let icon: String
     /// `#RRGGBB`.
     let color: String
-    /// The app's own icon, a file in `MiniAppCatalog.icons`; nil when it has only the emoji.
-    var image: String?
 }
 
 enum MiniAppCatalog {
-    static let widgetKind = "DshMiniApps"
-
     private static var fileURL: URL? {
-        guard let groupId = WidgetSnapshotStore.groupId,
+        guard let groupId = Bundle.main.object(forInfoDictionaryKey: "DshAppGroup") as? String,
               let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupId) else { return nil }
         return container.appending(path: "mini-apps.json")
     }
@@ -29,31 +24,9 @@ enum MiniAppCatalog {
         return (try? JSONDecoder().decode([MiniAppSummary].self, from: data)) ?? []
     }
 
-    /// The icons the apps drew themselves, copied where the widget can read them.
-    private static var icons: URL? { fileURL?.deletingLastPathComponent().appending(path: "mini-app-icons", directoryHint: .isDirectory) }
-
-    static func icon(_ app: MiniAppSummary) -> UIImage? {
-        guard let name = app.image, let folder = icons else { return nil }
-        return UIImage(contentsOfFile: folder.appending(path: name).path)
-    }
-
-    /// Whether the list changed. `images` is each app's `icon.png`, by id.
     @discardableResult
-    static func write(_ apps: [MiniAppSummary], images: [String: URL] = [:]) -> Bool {
+    static func write(_ apps: [MiniAppSummary]) -> Bool {
         guard apps != read(), let url = fileURL, let data = try? JSONEncoder().encode(apps) else { return false }
-        if let icons {
-            let files = FileManager.default
-            try? files.createDirectory(at: icons, withIntermediateDirectories: true)
-            let wanted = Set(apps.compactMap(\.image))
-            for name in (try? files.contentsOfDirectory(atPath: icons.path)) ?? [] where !wanted.contains(name) {
-                try? files.removeItem(at: icons.appending(path: name))
-            }
-            for app in apps {
-                guard let name = app.image, let source = images[app.id] else { continue }
-                let target = icons.appending(path: name)
-                if !files.fileExists(atPath: target.path) { try? files.copyItem(at: source, to: target) }
-            }
-        }
         try? data.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         return true
     }
@@ -71,7 +44,6 @@ extension Color {
     }
 }
 
-/// An app of 我的应用, for Shortcuts and the widget's settings.
 struct MiniAppEntity: AppEntity {
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Mini App"
     static var defaultQuery = MiniAppQuery()
@@ -87,7 +59,6 @@ struct MiniAppEntity: AppEntity {
     }
 
     var displayRepresentation: DisplayRepresentation {
-        // The app's own name, not a phrase to translate.
         DisplayRepresentation(title: LocalizedStringResource(stringLiteral: "\(icon) \(name)"))
     }
 }
@@ -107,7 +78,7 @@ struct MiniAppQuery: EntityStringQuery {
     }
 }
 
-/// Opens one app of 我的应用. Added to the home screen from Shortcuts, it is the app's own icon there.
+/// Opens one Mini App. Added to the home screen from Shortcuts, it is the app's own icon there.
 struct OpenMiniAppIntent: AppIntent {
     static var title: LocalizedStringResource = "打开 Mini App"
     static var description = IntentDescription("打开一个 Mini App。在快捷指令里把它添加到主屏幕，就是这个 Mini App 的图标。")
@@ -131,15 +102,4 @@ struct OpenMiniAppIntent: AppIntent {
         DshIntentBridge.open?(.app(app.id))
         return .result()
     }
-}
-
-/// The 我的应用 widget's settings: which apps it shows.
-struct MiniAppsWidgetIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Mini Apps"
-    static var description = IntentDescription("选择小组件里放哪些 Mini App。")
-
-    @Parameter(title: "Mini Apps", size: [.systemSmall: 1, .systemMedium: 4])
-    var apps: [MiniAppEntity]?
-
-    init() {}
 }

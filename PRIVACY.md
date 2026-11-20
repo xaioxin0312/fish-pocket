@@ -16,8 +16,6 @@ Fish Pocket 是独立的开源社区项目，与深度求索（DeepSeek）不存
 
 开启远程控制后，Agents Anywhere 的登录凭证保存在这台设备的钥匙串里，退出登录时删除。电脑上的会话内容只在查看时读取，不在手机上另存。
 
-小组件要显示的会话标题、状态和当前工作区名称，由 App 写进设备上 App 与小组件共用的存储空间，同样不会离开设备。设备锁定时标题会被打码，也可以在 设置 → 小组件 里关掉标题。
-
 你授权过的本机数据（日历、提醒事项、通讯录、健康、位置、照片、音乐资料库等）不会被 App 另存一份，每次用到都是现读。例外是你明确交给智能体的文件：从照片里导出的那一张、你在文件选择器里选中的那几个，会拷一份进工作区，留到被删除为止。增、删、改默认直接执行，不会每次问你——想让它每次停下来问，或者干脆设成只读，都在「探索 → 本机能力」（iOS 17 的 iPad 上在侧边栏）中按项设置。App 只在本机留一份使用记录：哪项能力、什么操作、什么时候、调用方自报的名字，最近若干条，可以在同一页里查看和清空。
 
 ### 会发送到第三方的内容
@@ -67,8 +65,6 @@ Fish Pocket is an independent open-source community project. It is not affiliate
 Sessions, workspace files, settings and model provider credentials are stored only on your device. Deleting the app deletes this data.
 
 With remote control turned on, your Agents Anywhere sign-in is kept in this device's keychain and removed when you sign out. Sessions on your computers are read when you look at them and are not stored on the phone.
-
-For the widgets, the app writes session titles, their status and the current workspace name to storage on your device shared by the app and its widgets; this also never leaves the device. Titles are hidden while the device is locked, and you can turn them off in Settings → Widgets.
 
 Device data you have allowed (Calendar, Reminders, Contacts, Health, Location, Photos, your music library and the like) is never copied into the app’s own storage; it is read fresh each time it is used. The exception is a file you hand to the agent yourself: a picture exported from Photos, or files you choose in the file picker, are copied into the workspace and stay there until deleted. Adding, changing and deleting go ahead without asking by default; you can set any capability to ask every time, or to read-only, under Explore › Device capabilities (in the sidebar on an iPad before iOS 18). The app keeps one local record of that use — which capability, which operation, when, and the name the caller gave for itself — for the most recent entries only. You can read and clear it on the same screen.
 

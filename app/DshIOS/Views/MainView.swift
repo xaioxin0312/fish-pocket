@@ -12,7 +12,7 @@ struct MainView: View {
     /// The phone's tabs.
     enum HomeTab: Hashable { case sessions, bot, apps, explore }
 
-    enum Sheet: String, Identifiable { case settings, plugins, store, schedules, signIn, cordis, share, watch, capabilities, connectors, phoneControl, remote, fishPocket, miniApps; var id: String { rawValue } }
+    enum Sheet: String, Identifiable { case settings, plugins, store, schedules, signIn, cordis, share, capabilities, connectors, phoneControl, remote, fishPocket, miniApps; var id: String { rawValue } }
 
     @Environment(AppModel.self) private var app
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -268,19 +268,18 @@ struct MainView: View {
             sheet = .phoneControl
         }
         .fullScreenCover(isPresented: $webOpen) { WebFallbackView() }
-        // The Live Activity and the widgets; a cold launch keeps the link until this view is up.
+        // Share-extension and Shortcuts links; a cold launch keeps the link until this view is up.
         .onChange(of: link?.token, initial: true) {
             guard let request = link else { return }
             link = nil
             Task { await follow(request.link) }
         }
-        .onChange(of: workspaceId) { WidgetSnapshotWriter.shared.refresh() }
         .onAppear { settledWidth = sizeClass }
         .onChange(of: sizeClass) { _, size in
             if scenePhase == .active { settle(size) }
         }
         // On the tab bar the Bot pages are its Bot tab. A conversation left pushed under another
-        // tab is not on screen: what finishes there meanwhile is marked unread, and the watch told.
+        // tab is not on screen: what finishes there meanwhile is marked unread.
         .onChange(of: tab) { _, tab in
             guard usesTabs else { return }
             botOpen = tab == .bot
@@ -480,7 +479,7 @@ struct MainView: View {
     }
 
     #if DEBUG
-    /// Screenshots and UI checks: `simctl launch … -dshOpen drawer|workbench|approval|question|timeline|settings|plugins|store|schedules|signin|support|share|watch|connectors|whatsnew|capabilities|phonecontrol|remote|start|fishpocket|topup|miniapps|miniapp`.
+    /// Screenshots and UI checks: `simctl launch … -dshOpen drawer|workbench|approval|question|timeline|settings|plugins|store|schedules|signin|support|share|connectors|whatsnew|capabilities|phonecontrol|remote|start|fishpocket|topup|miniapps|miniapp`.
     /// `miniapp` opens the tool `-dshApp <id>` names.
     /// The conversation takes `workbench|filesearch|approval|question|timeline` itself; `filesearch` is the workbench's
     /// file search, with `-dshQuery <text>` to start it on a search.
@@ -494,7 +493,6 @@ struct MainView: View {
         case "signin": sheet = .signIn
         case "support": supportDialog = true
         case "share": sheet = .share
-        case "watch": sheet = .watch
         case "connectors": sheet = .connectors
         case "whatsnew": whatsNew = WhatsNew.current
         case "capabilities": sheet = .capabilities
@@ -522,7 +520,6 @@ struct MainView: View {
         case .signIn: SignInSheet()
         case .cordis: CordisPanelView(currentSession: selection)
         case .share: SheetStack { ShareAppPage() }
-        case .watch: SheetStack { WatchSetupPage() }
         case .capabilities: SheetStack { NativeCapabilitiesView() }.environment(\.systemLists, true)
         // The services ordinary conversations and Bots both reach; the Bot team's settings hold the same page.
         case .connectors: SheetStack { BotConnectorsPage() }.settingsStyle()

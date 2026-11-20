@@ -1,9 +1,7 @@
 import AppIntents
 import Foundation
 
-/// 新对话 for Siri, Shortcuts and the Control Center button. Compiled into the app and
-/// the widget extension; the system always runs it in the app (it opens the app), where
-/// `DshIntentBridge` hands the link to a window.
+/// Siri and Shortcuts. The intent runs in the app, where `DshIntentBridge` hands the link to a window.
 struct NewConversationIntent: AppIntent {
     static var title: LocalizedStringResource = "新对话"
     static var description = IntentDescription("打开 Fish Pocket，开始一个新对话。")

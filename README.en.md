@@ -2,7 +2,8 @@
   <img src="docs/assets/mascot.png" width="220" alt="Fish Pocket mascot: a winking whale girl">
 </p>
 
-<h3 align="center">Fish Pocket</h3>
+<p align="center"><b>xaioxin0312/fish-pocket compatibility fork</b>: this build omits widgets, Lock Screen / Dynamic Island Live Activities, the Control Center control and the Apple Watch app. DSH plugin management, Mini Apps and the share extension remain. The project still targets iOS 17.0; the iOS 16 port is in progress.</p>
+
 
 <h1 align="center">DSH (DeepSeek Harness) running on your iPhone and iPad, with a fully native interface</h1>
 
@@ -26,9 +27,8 @@
 
 <table>
 <tr>
-<td align="center" width="33%"><img src="docs/assets/demo-market.gif" width="250" alt="Finding cc-safety-net in the plugin market, installing and enabling it; back in the chat, the agent tries to run git reset --hard and the plugin blocks it"><br/><b>Plugin market</b><br/><sub>Install a safety-net plugin on the phone, and a destructive command gets blocked</sub></td>
-<td align="center" width="33%"><img src="docs/assets/demo-native.gif" width="250" alt="One sentence makes the agent add a review meeting to the system Calendar and create a reminder; the event then shows in the Calendar app"><br/><b>Device capabilities</b><br/><sub>Say it once: the meeting is in Calendar and the reminder is set</sub></td>
-<td align="center" width="33%"><img src="docs/assets/demo-widget.gif" width="250" alt="Going to the Home Screen while a task runs: the widget and the Dynamic Island show the session in progress, and tapping the widget returns to it"><br/><b>Widgets and Dynamic Island</b><br/><sub>Tasks keep running in the background, with progress on the Home Screen</sub></td>
+<td align="center" width="50%"><img src="docs/assets/demo-market.gif" width="250" alt="Finding cc-safety-net in the plugin market, installing and enabling it; back in the chat, the agent tries to run git reset --hard and the plugin blocks it"><br/><b>Plugin market</b><br/><sub>Install a safety-net plugin on the phone, and a destructive command gets blocked</sub></td>
+<td align="center" width="50%"><img src="docs/assets/demo-native.gif" width="250" alt="One sentence makes the agent add a review meeting to the system Calendar and create a reminder; the event then shows in the Calendar app"><br/><b>Device capabilities</b><br/><sub>Say it once: the meeting is in Calendar and the reminder is set</sub></td>
 </tr>
 </table>
 
@@ -63,14 +63,6 @@
   <sub>Start a task on the cover screen, unfold, and the same session keeps running with the sidebar beside the chat</sub>
 </p>
 
-<p align="center">
-  <img src="docs/assets/demo-watch.gif" width="840" alt="A task is sent on iPhone, which then goes back to the Home Screen; on the Apple Watch beside it the mascot first shows it is working, then that it waits on you. The approval is opened and allowed on the watch, the task carries on, and a card pops up on the watch when it is done">
-  <br/>
-  <b>Apple Watch</b>
-  <br/>
-  <sub>Put the phone down and glance at your wrist: approve from the watch, and get a tap when the work is done</sub>
-</p>
-
 <p align="center"><sub>These are recordings of the app running, with waits cut or sped up. They show the Chinese interface; the app also comes in Traditional Chinese, English, Spanish, Japanese and Korean.</sub></p>
 
 ## What it does
@@ -90,7 +82,7 @@
 - **DSH plugins.** Install and manage DSH plugins on the phone, ready to use, no computer involved. Fish Pocket provides no plugin market: Index Sources lists two third-party sources as examples, which you can turn on after judging them yourself, and you can add sources you trust or install pure JavaScript plugins straight from npm.
 - **A workbench.** Terminal, file preview, built-in browser and change review in one panel. The built-in browser has tabs, and the agent can work web pages directly: tap, type, take screenshots, make requests with the page's sign-in, and upload and download files.
 - **Voice input and read-aloud.** Hold to talk and let go to send the transcribed text, recognized by DeepSeek or Volcano Engine; replies can be read aloud with DeepSeek's voices, female or male. Both use your own API key.
-- **Made for iOS.** Dynamic Island and Lock Screen Live Activities, Home Screen and Lock Screen widgets, a Control Center button, Siri and Shortcuts, sharing from WeChat and other apps into a new conversation, a Bot or a group chat, sharing a few turns of a conversation as one long image (keys masked), and tasks that continue in the background.
+- **Made for iOS.** Siri and Shortcuts, sharing from WeChat and other apps into a new conversation, a Bot or a group chat, sharing a few turns of a conversation as one long image (keys masked), and tasks that continue in the background. This fork omits widgets, Lock Screen / Dynamic Island Live Activities, the Control Center control and the Apple Watch app.
 - **Made for iPad and iPhone Duo too.** The system's adaptive tabs (a top tab bar or a sidebar), the session list beside the chat, a side workbench, multiple windows, file drag and drop, and keyboard shortcuts. On iPhone Duo, use the outer screen when it is closed and the full inner screen when it is open, without the session stopping.
 - **More private.** Sessions and workspaces stay on your device.
 
@@ -121,7 +113,7 @@ Say "make a countdown to New Year" in a chat, and the agent writes the page; it 
 
 - **Opens instantly.** You open the finished version, with no compiling and no engine to start; while the agent is halfway through a change, you still get the last finished one.
 - **Kept apart.** Each tool has its own storage, deleted along with it; it can go online but cannot reach other data on the phone or the device capabilities.
-- **Many ways in.** The Tools tab, cards in the chat, the Tools widget and Shortcuts all open it.
+- **Many ways in.** The Mini Apps tab, cards in the chat and Shortcuts all open it.
 
 Start with the built-in countdown, Pomodoro timer and fruit memory game.
 
@@ -137,25 +129,23 @@ The backend is the open-source [DS Bot](https://github.com/Fei2411/DS-Bot). Fish
 
 ## Remote control
 
-The agents on your computers and servers are in reach too. Sign in to [Agents Anywhere](https://github.com/anywhere-labs/Agents-Anywhere) and the Codex, Claude Code and DeepSeek Harness sessions on those machines appear in the same session list as the sessions on the device: follow their progress, keep the conversation going, answer approvals, stop a run, or start a new session on that machine. The Lock Screen, Dynamic Island and widgets treat remote sessions the same as local ones.
+The agents on your computers and servers are in reach too. Sign in to [Agents Anywhere](https://github.com/anywhere-labs/Agents-Anywhere) and the Codex, Claude Code and DeepSeek Harness sessions on those machines appear in the same session list as the sessions on the device: follow their progress, keep the conversation going, answer approvals, stop a run, or start a new session on that machine. This fork shows remote sessions in the app and its notifications; it does not include widgets, Live Activities or Apple Watch notifications.
 
 On a personal computer, install the Agents Anywhere desktop app and sign in from Fish Pocket with a QR code; no public IP needed. A cloud server without a desktop runs its Connector instead. The phone and the machine talk through an Agents Anywhere server, either its cloud service or one you host. It is optional: nothing happens until you sign in, and sessions on the device stay on the device. For the steps, see the [remote control guide](docs/remote-control.md) (in Chinese).
 
 ## Compared with the official DSH Web UI
 
-The features match the official DSH Web UI: what it can do, this can do, with the interface rebuilt from scratch in SwiftUI and adapted separately for iPhone and iPad. On top of that come things the official client does not have: device capabilities, tools you make yourself, the Dynamic Island and Lock Screen Live Activities, widgets, Siri and Shortcuts, tasks that continue in the background, multiple windows on iPad, phone control, Bot mode with a native interface, and remote control.
+The core chat, plugin and agent features track the official DSH Web UI, with the interface rebuilt in SwiftUI for iPhone and iPad. This fork also includes device capabilities, phone control, Mini Apps, Siri and Shortcuts, the share extension, background work, multiple windows on iPad, native Bot mode and remote control. Widgets, Live Activities, Control Center and Apple Watch are omitted from this build.
 
 ## Quick start
 
-To install it, you need iOS 17 or later:
-
-- **App Store (recommended)**: [download on the App Store](https://apps.apple.com/app/id6830703602). Every App Store version has to wait for Apple's review, so it lags behind TestFlight and this repository.
-- **TestFlight (new versions first)**: open the [TestFlight beta link](https://testflight.apple.com/join/2SCftb2M) on your iPhone or iPad. New versions land here first and stay in step with this repository.
+This fork's current build target is iOS 17.0; work to support iOS 16.6.1 is still in progress. The App Store and TestFlight links below point to the upstream app, not builds of this fork.
+The App Store and TestFlight links are for upstream Fish Pocket builds, not this fork.
 
 To build it yourself, you need macOS, Xcode 27 or later, Node 24 and `xcodegen`, plus `cmake` or `uv` to build libgit2. Filling the screen on iPhone Duo takes Xcode 27.1 or later: a build from an earlier Xcode runs there at the size of an ordinary iPhone.
 
 ```bash
-git clone https://github.com/imsai-sh/fish-pocket.git
+git clone https://github.com/xaioxin0312/fish-pocket.git
 ```
 
 ```bash
@@ -213,7 +203,7 @@ Fish Pocket is an open-source iOS app that puts the whole DeepSeek Harness (DSH)
 
 ### How is Fish Pocket different from the official DSH Web UI?
 
-The features match: what the official Web UI can do, Fish Pocket can do. The differences are that the engine runs on the phone or tablet itself, with no computer left on; the interface is rebuilt in SwiftUI for a native experience on iPhone and iPad; and it adds device capabilities, the Dynamic Island, widgets, Siri and multiple windows on iPad, none of which the official client has.
+The core chat and plugin features track the official Web UI. This fork additionally has device capabilities, Mini Apps, Siri and Shortcuts, sharing, phone control and native iPad windows. It omits widgets, Live Activities, Control Center and Apple Watch. App Store and TestFlight links on this page are for the upstream app, not builds of this fork.
 
 ### Do I need to keep a computer running?
 
@@ -261,7 +251,7 @@ More answers on the [website](https://fish.deepseek1024.com/en/#faq).
 - [x] Let the agent use the iPhone's device capabilities: Calendar, Reminders, Health, Photos, Maps and more
 - [x] Built-in Python 3.15, with pip and venv
 - [x] Built-in FFmpeg: `ffmpeg` and `ffprobe`
-- [x] Remote control: manage the Codex, Claude Code and DSH sessions on your computers and servers from the phone, with the same Lock Screen, Dynamic Island and widgets as sessions on the device (through Agents Anywhere)
+- [x] Remote control: manage the Codex, Claude Code and DSH sessions on your computers and servers from the phone, through Agents Anywhere; this fork retains in-app status and notifications
 - [ ] Move the bash interpreter off the engine thread
 - [x] Bot mode: hand tasks to the agent in your pocket from a chat
 - [x] Phone control: the agent taps through other apps for you, through iCTRL

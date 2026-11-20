@@ -1,11 +1,10 @@
 import SafariServices
 import SwiftUI
-import WatchConnectivity
 
 /// Settings: only what people come here for (账号, 模型, 访问模式, 插件, 自动化, 后台运行: 静音音频,
-/// 任务续跑, 小组件), then the rarely touched 外观, App 图标 and 语言. Developer pages sit behind 高级, versions and
+/// 任务续跑), then the rarely touched 外观, App 图标 and 语言. Developer pages sit behind 高级, versions and
 /// engine status behind 关于. 本机能力 and 远程控制 are on the 探索 tab (in the sidebar on an iPad before iOS 18), not here.
-/// 分享 Fish Pocket and Apple Watch open the list (pushed from the 探索 tab they are on that page instead); the star, rating, website, source, feedback and author links,
+/// 分享 Fish Pocket opens the list (pushed from the 探索 tab it is on that page instead); the star, rating, website, source, feedback and author links,
 /// then the WeChat group's QR code and the Discord server, close it.
 /// The engine card shows here only while the engine is not running. Every page reads the shared
 /// settings mirror, so a write anywhere shows everywhere.
@@ -62,7 +61,6 @@ private struct SettingsList: View {
     @State private var languageChoice = AppLanguage.chosen ?? "system"
     @State private var languageChanged = false
     @AppStorage(BackgroundKeeper.continuedKey) private var continuedProcessing = false
-    @AppStorage(WidgetSnapshotWriter.showTitlesKey) private var widgetTitles = true
     /// Pushed from the 探索 tab rather than the root of the sheet (`SettingsView.pushed`).
     let pushed: Bool
 
@@ -79,14 +77,10 @@ private struct SettingsList: View {
                 Section { EngineCard() }
             }
 
-            // Pushed from the 探索 tab, these two are on that page.
+            // Pushed from the 探索 tab, sharing is on that page.
             if !pushed {
                 Section {
                     NavigationLink { ShareAppPage() } label: { ShareAppRow() }
-                    // iPad pairs with no watch.
-                    if WCSession.isSupported() {
-                        NavigationLink { WatchSetupPage() } label: { WatchSetupRow() }
-                    }
                 }
             }
 
@@ -154,15 +148,6 @@ private struct SettingsList: View {
             } message: {
                 Text("离开 App 时\(turnsOffScreen)，之后引擎可能被系统暂停，自动化和开发服务器会中断。")
             }
-
-            Section {
-                Toggle(isOn: $widgetTitles) { Label("显示会话标题", systemImage: "eye") }
-            } header: {
-                Text("小组件")
-            } footer: {
-                Text("关掉后，主屏幕和锁屏小组件只显示数量和状态。设备锁定时，标题总会被打码。")
-            }
-            .onChange(of: widgetTitles) { WidgetSnapshotWriter.shared.refresh() }
 
             Section {
                 if let theme = mirror.namespace("ui-theme") {
