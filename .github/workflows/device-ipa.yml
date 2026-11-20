@@ -1,0 +1,85 @@
+# Manual build only. Produces an unsigned device package, not a signed release.
+name: Device IPA (unsigned)
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_label:
+        description: 'macOS runner label with the required Xcode installed'
+        type: string
+        required: true
+        default: xcode-27
+      xcode_path:
+        description: 'Xcode application path (must exist on the selected runner)'
+        type: string
+        required: true
+        default: /Applications/Xcode_27.2.app
+
+permissions:
+  contents: read
+
+concurrency:
+  group: device-ipa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  device:
+    runs-on: ${{ inputs.runner_label }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: engine/package-lock.json
+
+      - name: Select Xcode and verify host
+        env:
+          XCODE_PATH: ${{ inputs.xcode_path }}
+        run: |
+          set -euo pipefail
+          test "$(uname -s)" = Darwin
+          test -d "$XCODE_PATH/Contents/Developer"
+          sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          xcodebuild -version
+          command -v xcodegen >/dev/null || brew install xcodegen
+          command -v cmake >/dev/null || brew install cmake
+
+      - name: Cache native dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            vendor/nodejs-mobile/ios
+            vendor/nodejs-mobile/rooted
+            vendor/python/ios
+            vendor/python/rooted
+            vendor/libgit2/Libgit2.xcframework
+            vendor/libgit2/ios-arm64
+            vendor/libgit2/ios-arm64-simulator
+            vendor/libgit2/macos
+            vendor/ffmpeg/FFmpeg.xcframework
+          key: device-v1-${{ runner.os }}-${{ runner.arch }}-${{ inputs.xcode_path }}-${{ hashFiles('scripts/fetch-nodejs-mobile.sh', 'scripts/fetch-python.sh', 'scripts/build-libgit2.sh', 'scripts/fetch-ffmpeg.sh', 'scripts/build-ffmpeg.sh', 'native/ffmpeg/**', 'native/root/**') }}
+
+      - name: Build device app and package unsigned IPA
+        run: bash scripts/build-unsigned-ipa.sh
+
+      - name: Upload unsigned IPA and actual OS requirements
+        uses: actions/upload-artifact@v4
+        with:
+          name: FishPocket-device-unsigned-${{ github.run_number }}
+          path: |
+            build/ipa/FishPocket-unsigned.ipa
+            build/ipa/FishPocket-unsigned.ipa.sha256
+            build/ipa/build-manifest.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FishPocket-device-build-log-${{ github.run_number }}
+          path: build/ipa/xcodebuild.log
+          if-no-files-found: ignore
+          retention-days: 7
